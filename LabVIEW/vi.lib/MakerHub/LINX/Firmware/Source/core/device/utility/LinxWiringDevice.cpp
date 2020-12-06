@@ -35,7 +35,11 @@
 
 #include <SPI.h>
 #include <Wire.h>
+#ifndef IS_M0
 #include <EEPROM.h>
+#else
+#include <FlashAsEEPROM.h>
+#endif
 #include <Servo.h>
 
 /****************************************************************************************
@@ -311,7 +315,11 @@ int LinxWiringDevice::SpiOpenMaster(unsigned char channel)
 
 int LinxWiringDevice::SpiSetBitOrder(unsigned char channel, unsigned char bitOrder)
 {
+	#ifndef IS_M0
 	SPI.setBitOrder(bitOrder);
+	#else
+	SPI.setBitOrder((BitOrder) bitOrder);
+	#endif
 	return 0;
 }
 

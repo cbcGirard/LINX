@@ -20,10 +20,10 @@
 //Also Include Desired LINX Listener From Sketch>>Import Library (In This Case LinxSerialListener.h)
 #include <LinxAdafruitFeatherM0WiFi.h>
 #include <LinxSerialListener.h>
+
+// Debugging junk
 #include <compiler_debug.h>
-
 #pragma message( "Debug = " DISPLAY_VALUE(DEBUG_ENABLED))
-
 #pragma message( "numUart = " DISPLAY_VALUE(NUM_UART_CHANS))
  
 //Create A Pointer To The LINX Device Object We Instantiate In Setup()

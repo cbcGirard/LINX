@@ -26,15 +26,15 @@
 const unsigned char LinxAdafruitFeatherM0WiFi::m_DeviceName[DEVICE_NAME_LEN] = "Adafruit Feather M0 Wifi";
 
 //AI
-const unsigned char LinxAdafruitFeatherM0WiFi::m_AiChans[NUM_AI_CHANS] = {0, 1, 2, 3, 4, 5,  7, 10}; 
+const unsigned char LinxAdafruitFeatherM0WiFi::m_AiChans[NUM_AI_CHANS] = {14, 15, 16, 17, 18, 19, 9}; 
 const unsigned long LinxAdafruitFeatherM0WiFi::m_AiRefIntVals[NUM_AI_INT_REFS] = {};
 const int LinxAdafruitFeatherM0WiFi::m_AiRefCodes[NUM_AI_INT_REFS] = {};
 
 //AO
-//None
+//pin # 14
 
 //DIGITAL
-const unsigned char LinxAdafruitFeatherM0WiFi::m_DigitalChans[NUM_DIGITAL_CHANS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}; 
+const unsigned char LinxAdafruitFeatherM0WiFi::m_DigitalChans[NUM_DIGITAL_CHANS] = {0, 1, 5, 6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24}; 
 
 //PWM
 const unsigned char LinxAdafruitFeatherM0WiFi::m_PwmChans[NUM_PWM_CHANS] = {5, 6, 9, 10, 11, 12, 13}; 
@@ -52,11 +52,11 @@ unsigned char LinxAdafruitFeatherM0WiFi::m_I2cChans[NUM_I2C_CHANS] = {0, 1};
 unsigned char LinxAdafruitFeatherM0WiFi::m_I2cRefCount[NUM_I2C_CHANS];			
 
 //UART
-unsigned char LinxAdafruitFeatherM0WiFi::m_UartChans[NUM_UART_CHANS] = {0};
+unsigned char LinxAdafruitFeatherM0WiFi::m_UartChans[NUM_UART_CHANS] = {0,1};
 unsigned long LinxAdafruitFeatherM0WiFi::m_UartSupportedSpeeds[NUM_UART_SPEEDS] = {300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 31250, 38400, 57600, 115200};
 
 //SERVO
-Servo* LinxAdafruitFeatherM0WiFi::m_Servos[NUM_SERVO_CHANS] =	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};		//Initialize To Null Pointers
+Servo* LinxAdafruitFeatherM0WiFi::m_Servos[NUM_SERVO_CHANS] =	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};		//Initialize To Null Pointers
 
 /****************************************************************************************
 **  Constructors /  Destructor
@@ -64,7 +64,7 @@ Servo* LinxAdafruitFeatherM0WiFi::m_Servos[NUM_SERVO_CHANS] =	{0, 0, 0, 0, 0, 0,
 LinxAdafruitFeatherM0WiFi::LinxAdafruitFeatherM0WiFi()
 {
 	//Family ID Set At Family Level
-	DeviceId = 0x03;	//Teensy 3.1
+	DeviceId = 0xFF;	//temp
 	DeviceNameLen = DEVICE_NAME_LEN;	 
 	DeviceName =  m_DeviceName;
 

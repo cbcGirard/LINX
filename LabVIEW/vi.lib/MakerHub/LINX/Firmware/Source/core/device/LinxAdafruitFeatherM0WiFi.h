@@ -17,12 +17,12 @@
 ****************************************************************************************/	
 #define DEVICE_NAME_LEN 25
 
-#define NUM_AI_CHANS 8
+#define NUM_AI_CHANS 7
 #define AI_RES_BITS 12
 #define AI_REFV 3300000
 #define NUM_AI_INT_REFS 0
 
-#define NUM_DIGITAL_CHANS 22
+#define NUM_DIGITAL_CHANS 20
 
 #define NUM_PWM_CHANS 7
 
@@ -31,7 +31,7 @@
 
 #define NUM_I2C_CHANS 2
 
-#define NUM_UART_CHANS 3
+#define NUM_UART_CHANS 2
 #define NUM_UART_SPEEDS 13
 
 #define NUM_SERVO_CHANS NUM_DIGITAL_CHANS

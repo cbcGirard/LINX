@@ -42,12 +42,16 @@
 #endif
 
 //SPI
+#ifndef IS_M0
+
 #ifndef LSBFIRST
 	#define LSBFIRST 0
 #endif
 
 #ifndef MSBFIRST
 	#define MSBFIRST 1
+#endif
+
 #endif
 
 //I2C
