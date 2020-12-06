@@ -175,6 +175,59 @@ int LinxWiringDevice::AnalogSetRef(unsigned char mode, unsigned long voltage)
 	return L_FUNCTION_NOT_SUPPORTED;
 }
 
+int LinxWiringDevice::AnalogWrite(unsigned char numChans, unsigned char* channels, unsigned char* values)
+{
+	unsigned int outputValue=0;
+	unsigned char packetByteOffset=0;
+	unsigned char packetBitsRemaining=8;
+	unsigned char outputBitsRemaining=AoResolution;
+	unsigned char currentByte=0;
+
+
+	for(int i=0; i<numChans; i++)
+	{
+		outputBitsRemaining=AoResolution;
+		outputValue=0;
+
+		while (outputBitsRemaining>0)
+		{
+			currentByte=*(values+packetByteOffset);
+			if (outputBitsRemaining>8)
+			{
+			outputValue|=(unsigned int) (currentByte<<(8-packetBitsRemaining))<<(outputBitsRemaining-8);
+
+			}
+			else 
+			{
+			outputValue|=(unsigned int) (currentByte<<(8-packetBitsRemaining))>>(8-outputBitsRemaining);
+
+			}
+
+			if(packetBitsRemaining>outputBitsRemaining)			
+			{
+				//channel complete
+				// outputValue |= (unsigned int) (currentByte>>(8-outputBitsRemaining));
+				packetBitsRemaining-=outputBitsRemaining;
+				outputBitsRemaining=0;
+				pinMode(channels[i], OUTPUT);
+				analogWrite( channels[i], outputValue);
+			}
+			else
+			{
+				//packet byte complete
+				// outputValue|=(unsigned int) (currentByte<<(8-packetBitsRemaining))>>(8-outputBitsRemaining);
+				outputBitsRemaining -= packetBitsRemaining;
+				packetByteOffset++;
+				packetBitsRemaining=8;
+			}
+		}
+		fromCurrentByte= *(values+packetByteOffset)
+		
+		
+	}
+	
+	return L_OK;
+}
 //--------------------------------------------------------DIGITAL-------------------------------------------------------
 
 int LinxWiringDevice::DigitalWrite(unsigned char numChans, unsigned char* channels, unsigned char* values)

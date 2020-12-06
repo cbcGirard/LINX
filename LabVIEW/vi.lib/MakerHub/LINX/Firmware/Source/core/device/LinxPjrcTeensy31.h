@@ -22,6 +22,11 @@
 #define AI_REFV 3300000
 #define NUM_AI_INT_REFS 0
 
+#define NUM_AO_CHANS 1
+#define AO_RES_BITS 12
+#define AO_REFV 3300000
+#define NUM_AO_INT_REFS 0
+
 #define NUM_DIGITAL_CHANS 24
 
 #define NUM_PWM_CHANS 12
@@ -56,10 +61,12 @@ class LinxPjrcTeensy31 : public LinxPjrc
 		static const unsigned char m_AiChans[NUM_AI_CHANS];
 		static const unsigned long m_AiRefIntVals[NUM_AI_INT_REFS];
 		static const int m_AiRefCodes[NUM_AI_INT_REFS];
-		
-		//AI
-		//None
-		
+
+		//AO
+		static const unsigned char m_AoChans[NUM_AO_CHANS];
+		static const unsigned long m_AoRefIntVals[NUM_AO_INT_REFS];
+		static const int m_AoRefCodes[NUM_AO_INT_REFS];
+
 		//DIGITAL
 		static const unsigned char m_DigitalChans[NUM_DIGITAL_CHANS];	
 		

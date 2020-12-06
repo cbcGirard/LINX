@@ -31,7 +31,8 @@ const unsigned long LinxPjrcTeensy31::m_AiRefIntVals[NUM_AI_INT_REFS] = {};
 const int LinxPjrcTeensy31::m_AiRefCodes[NUM_AI_INT_REFS] = {};
 
 //AO
-//None
+//a14
+const unsigned char LinxPjrcTeensy31::m_AoChans[NUM_A0_CHANS]= {14};
 
 //DIGITAL
 const unsigned char LinxPjrcTeensy31::m_DigitalChans[NUM_DIGITAL_CHANS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}; 
@@ -94,8 +95,20 @@ LinxPjrcTeensy31::LinxPjrcTeensy31()
 	AiRefExtMax = 3300000;
 	
 	//AO
-	NumAoChans = 0;
-	AoChans = 0;
+	NumAoChans = NUM_AO_CHANS;
+	AoChans = m_AoChans;
+	AoResolution=AO_RES_BITS;
+	AoRefSet=AO_REFV;
+
+	AoRefDefault=AO_REFV;
+	AoRefSet=AO_REFV;
+	AoRefCodes=m_AoRefCodes;
+
+	NumAoRefIntVals=NUM_AO_INT_REFS;
+	AoRefIntVals=m_AoRefIntVals;
+
+	AoRefExtMin=0;
+	AoRefExtMax=3300000;
 	
 	//PWM
 	NumPwmChans = NUM_PWM_CHANS;
