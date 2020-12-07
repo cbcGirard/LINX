@@ -225,7 +225,7 @@ int LinxWiFi101Listener::Init()
 
 	while (WiFi.status() != WL_CONNECTED) {
 		delay(500);
-		Serial.print(".");
+		Serial1.print(".");
 	}
 
 	//Connect To Network
