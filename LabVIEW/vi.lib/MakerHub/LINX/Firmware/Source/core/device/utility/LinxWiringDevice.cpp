@@ -196,16 +196,24 @@ int LinxWiringDevice::AnalogWrite(unsigned char numChans, unsigned char* channel
 		while (outputBitsRemaining>0)
 		{
 			currentByte=*(values+packetByteOffset);
+
+			// Serial1.print("Current byte=");
+			// Serial1.println(currentByte,HEX);
+			// Serial1.print(outputValue,HEX);
+			// Serial1.print("->");
 			if (outputBitsRemaining>8)
 			{
-			outputValue|=(unsigned int) (currentByte<<(8-packetBitsRemaining))<<(outputBitsRemaining-8);
+				//take whole byte
+			outputValue|=(unsigned int) (currentByte)<<(AoResolution-outputBitsRemaining);
 
 			}
 			else 
 			{
-			outputValue|=(unsigned int) (currentByte<<(8-packetBitsRemaining))>>(8-outputBitsRemaining);
+				//take top n bits
+			outputValue|=(unsigned int) (currentByte<<(8-outputBitsRemaining))<<(outputBitsRemaining);
 
 			}
+			// Serial1.println(outputValue,HEX);
 
 			if(packetBitsRemaining>outputBitsRemaining)			
 			{
@@ -213,7 +221,6 @@ int LinxWiringDevice::AnalogWrite(unsigned char numChans, unsigned char* channel
 				// outputValue |= (unsigned int) (currentByte>>(8-outputBitsRemaining));
 				packetBitsRemaining-=outputBitsRemaining;
 				outputBitsRemaining=0;
-				pinMode(channels[i], OUTPUT);
 				analogWrite( channels[i], outputValue);
 			}
 			else
@@ -224,10 +231,7 @@ int LinxWiringDevice::AnalogWrite(unsigned char numChans, unsigned char* channel
 				packetByteOffset++;
 				packetBitsRemaining=8;
 			}
-		}
-		fromCurrentByte= *(values+packetByteOffset)
-		
-		
+		}		
 	}
 	
 	return L_OK;

@@ -31,8 +31,9 @@ const unsigned long LinxPjrcTeensy31::m_AiRefIntVals[NUM_AI_INT_REFS] = {};
 const int LinxPjrcTeensy31::m_AiRefCodes[NUM_AI_INT_REFS] = {};
 
 //AO
-//a14
-const unsigned char LinxPjrcTeensy31::m_AoChans[NUM_A0_CHANS]= {14};
+const unsigned char LinxPjrcTeensy31::m_AoChans[NUM_AO_CHANS]= {14};
+const unsigned long LinxPjrcTeensy31::m_AoRefIntVals[NUM_AO_INT_REFS] = {};
+const int LinxPjrcTeensy31::m_AoRefCodes[NUM_AO_INT_REFS] = {};
 
 //DIGITAL
 const unsigned char LinxPjrcTeensy31::m_DigitalChans[NUM_DIGITAL_CHANS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}; 
