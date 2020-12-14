@@ -27,12 +27,16 @@
 LinxWiFi101Listener::LinxWiFi101Listener()
 {
 	State = START;
+	Interface=TCP;
 	
 	wifiState = sINIT;
 	LinxWifiConnectStatus = WL_IDLE_STATUS;
 	LinxWifiTimeout = 2000;
 	unsigned char wifiServerFail = 0;
-	
+
+	#ifdef ADAFRUIT_FEATHER_M0
+		WiFi.setPins(8,7,4,2);
+	#endif	
 }
 
 /****************************************************************************************
@@ -69,16 +73,23 @@ int LinxWiFi101Listener::Start(LinxDevice* linxDev)
 {
 		
 	LinxDev = linxDev;
+
+		recBuffer = (unsigned char*) malloc(LinxDev->ListenerBufferSize);
+	sendBuffer = (unsigned char*) malloc(LinxDev->ListenerBufferSize);
+	
 	LinxDev->DebugPrintln("Network Wifi Stack :: Starting With NVS Data");
 	
 	//Load Stored WIFI Values
 	int ssidSize = LinxDev->NonVolatileRead(NVS_WIFI_SSID_SIZE);
+	ssidSize=(ssidSize>32)?32:ssidSize;
 	for(int i=0; i<ssidSize; i++)
 	{
 		LinxWifiSsid[i] = LinxDev->NonVolatileRead(NVS_WIFI_SSID + i);
 	}
 	
 	int pwSize = LinxDev->NonVolatileRead(NVS_WIFI_PW_SIZE);
+	pwSize=(pwSize>32)?32:pwSize;
+
 	for(int i=0; i<pwSize; i++)
 	{
 		LinxWifiPw[i] = LinxDev->NonVolatileRead(NVS_WIFI_PW + i);
@@ -98,6 +109,10 @@ int LinxWiFi101Listener::Start(LinxDevice* linxDev, unsigned char ip3, unsigned 
 {
 	LinxDev = linxDev;
 	
+	recBuffer = (unsigned char*) malloc(LinxDev->ListenerBufferSize);
+	sendBuffer = (unsigned char*) malloc(LinxDev->ListenerBufferSize);
+	
+
 	LinxDev->DebugPrintln("Network Wifi Stack :: Starting With Fixed IP Address");
 
 	LinxWifiIp = ip3<<24 | ip2<<16 | ip1<< 8 | ip0;
@@ -196,7 +211,7 @@ int LinxWiFi101Listener::Init()
 	if (LinxWifiIp) {
 		// if IP == 0.0.0.0 then use DHCP
 		IPAddress ip(LinxWifiIp>>24 & 0xFF, LinxWifiIp>>16 & 0xFF, LinxWifiIp>>8 & 0xFF, LinxWifiIp & 0xFF);
-		WiFi.config(ip, IPAddress(0,0,0,0), IPAddress(255,255,255,255));
+		WiFi.config(ip, IPAddress(0,0,0,0), IPAddress(0,0,0,0), IPAddress(255,255,255,255));
 	}
 		
 	switch(LinxWifiSecurity)
@@ -223,17 +238,18 @@ int LinxWiFi101Listener::Init()
 			break;     
 	}
 
-	while (WiFi.status() != WL_CONNECTED) {
-		delay(500);
-		Serial1.print(".");
-	}
+	// while (WiFi.status() != WL_CONNECTED) {
+	// 	delay(500);
+	// 	Serial1.print(".");
+	// }
 
 	//Connect To Network
 	if(LinxWifiConnectStatus == WL_CONNECTED)
 	{
 		LinxDev->DebugPrintln("");
 		LinxDev->DebugPrintln("Connected To Wifi Network");
-		m_pWifiSvr = new WiFiServer(LinxWifiPort);
+		m_pWifiSvr=new WiFiServer(LinxWifiPort);
+		LinxWifiIp= WiFi.localIP();
 		
 		//Start the server
 		m_pWifiSvr->begin();
@@ -266,7 +282,7 @@ int LinxWiFi101Listener::Accept()
 
 	if(m_WifiClient.connected())
 	{
-		LinxDev->DebugPrintln("Client Connected");
+		// LinxDev->DebugPrintln("Client Connected");
 		State = CONNECTED;
 		LinxWifiStartTime = (unsigned)millis();
 	}
@@ -281,12 +297,14 @@ int LinxWiFi101Listener::Accept()
 int LinxWiFi101Listener::Connected()
 {
 	//Read Wifi TCP Bytes
-		
+		uint8_t tmp;
 	//If There Are Bytes Available Have A Look, If Not Loop (Remain In Read Unless Timeout)
 	if(m_WifiClient.available() > 0)
 	{
 		//Read First Byte, Check If It Is SoF (0xFF)
-		if ( (recBuffer[0] = m_WifiClient.read()) == 0xFF)
+		tmp=m_WifiClient.peek();
+		recBuffer[0] = m_WifiClient.read();
+		if ( recBuffer[0] == 0xFF)
 		{
 			//LinxDev->DebugPrintln("Network Stack :: SoF Received");
 			

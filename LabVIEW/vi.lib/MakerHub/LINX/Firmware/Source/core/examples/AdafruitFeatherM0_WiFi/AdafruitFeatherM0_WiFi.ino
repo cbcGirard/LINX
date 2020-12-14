@@ -9,12 +9,21 @@
 **  BSD2 License.
 ****************************************************************************************/
 
+// Leave uncommented if network name+password programmed in sketch
+  #define WIFI_HARDCODED
+// WARNING: firmware is currently not functional if the above is commented out!!! After programming the Feather, the USB connection will no longer work. To rescue the Feather, double-tap its reset button to enter a recovery mode, where the red LED will pulse and a new USB device will appear to the PC. Select this new port and upload a working firmware to restore the Feather.
+
 //Include All Peripheral Libraries Used By LINX
 #include <SPI.h>
 #include <Wire.h>
 #include <FlashAsEEPROM.h>
 #include <Servo.h>
 #include <WiFi101.h>
+
+// Pre-Programmed 
+#ifdef WIFI_HARDCODED
+#include "wifiInfo.h"
+#endif
 
 //Include Device Specific Header From Sketch>>Import Library (In This Case LinxAdafruitFeatherM0WiFi.h)
 //Also Include Desired LINX Listener From Sketch>>Import Library 
@@ -33,20 +42,19 @@ void setup()
   //The LINX Serial Listener Is Included In WIFI Listener And Pre Instantiated.  This Is Necessary For Configuring Wifi Settings.
   LinxSerialConnection.Start(LinxDevice, 0);
 
-
-  // Needed for Feather's WiFi module pinout
-  WiFi.setPins(8,7,4,2);
   
   //Start Wifi Listener.  Settings (IP, SSID, etc) Will Be Read From Non Volatile Storage And Can Be Set Using LINX VIs Via USB
-  // LinxWifiConnection.Start(LinxDevice);
-
+  #ifndef WIFI_HARDCODED
+   LinxWifiConnection.Start(LinxDevice);
+  #else
   //Or, set manually: 
 
-  LinxWifiConnection.SetSsid("YOUR_NETWORK_NAME");
+  LinxWifiConnection.SetSsid(THE_SSID);
   LinxWifiConnection.SetSecurity(WPA2_PASSPHRASE);  //NONE, WPA2_PASSPHRASE, WPA2_KEY, WEP40, WEO104
-  LinxWifiConnection.SetPassphrase("PASSPHRASE");    			   
-  LinxWifiConnection.Start(LinxDevice, 192, 168, 0, 199, 44300);  //Start With Fixed IP and Port.  When Using This Method You Cannot Update The IP/Port Using LINX VIs
-
+  LinxWifiConnection.SetPassphrase(THE_PW);    			   
+  LinxWifiConnection.Start(LinxDevice, 0, 0, 0, 0, 44300);  //Start With Fixed IP and Port.  When Using This Method You Cannot Update The IP/Port Using LINX VIs
+ // Use an IP address of 0.0.0.0 for DHCP; router will assign address
+  #endif
 
 }
 

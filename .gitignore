@@ -7,3 +7,5 @@ Installers
 /LabVIEW/vi.lib/MakerHub/LINX/Firmware/Source/bin/*
 /LabVIEW/resource
 *.aliases
+*.aliases
+*.json
